@@ -66,13 +66,14 @@ procedure tIn0k_lazIdeSRC_expertCORE.LazarusIDE_SetUP;
 begin
     {$ifDef in0k_LazarusIdeEXT__DEBUG}
     in0k_lazarusIdeSRC__wndDEBUG.SetUpInIDE(self.ClassNAME);
-    in0k_lazarusIdeSRC__wndDEBUG.ShowWindow;
     {$endIf}
 end;
 
 procedure tIn0k_lazIdeSRC_expertCORE.LazarusIDE_CLEAN;
 begin
-    //in0k_lazIdeSRC_DEBUG.LazarusIDE_CLEAR;
+    {$ifDef in0k_LazarusIdeEXT__DEBUG}
+    // in0k_lazarusIdeSRC__wndDEBUG <--- оно САМО отпишется из IDE
+    {$endIf}
 end;
 
 end.
