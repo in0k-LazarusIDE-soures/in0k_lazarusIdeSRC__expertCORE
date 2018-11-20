@@ -8,13 +8,15 @@ interface
 uses {$ifDef in0k_LazarusIdeEXT__DEBUG}
      in0k_lazarusIdeSRC__wndDEBUG,
      {$endIf}
-     IDEIntf, LazIDEIntf;
+     LazIDEIntf;
 
 type
 
+  // САМО-регистрирующийся, САМО-отписывающийся и само-УНИЧТОЖАЮЩИЙСЯ
+  // объект-експерт для Lazarus IDE.
  tIn0k_lazIdeSRC_expertCORE=class
-  private
-    procedure _On_IDE_Close_({%H-}Sender:TObject);
+  strict private
+    procedure _On_IDE_Close_(Sender:TObject);
     procedure _Expert_CLEAN_; inline;
     procedure _Expert_SetUP_; inline;
   protected
@@ -27,6 +29,18 @@ type
 
 implementation
 
+procedure tIn0k_lazIdeSRC_expertCORE.LazarusIDE_SetUP;
+begin
+    //
+end;
+
+procedure tIn0k_lazIdeSRC_expertCORE.LazarusIDE_CLEAN;
+begin
+    //
+end;
+
+//==============================================================================
+
 procedure tIn0k_lazIdeSRC_expertCORE.AfterConstruction;
 begin
     inherited;
@@ -35,45 +49,39 @@ end;
 
 procedure tIn0k_lazIdeSRC_expertCORE.BeforeDestruction;
 begin
-    inherited;
    _Expert_CLEAN_;
+    inherited;
 end;
 
-//------------------------------------------------------------------------------
+//==============================================================================
 
 procedure tIn0k_lazIdeSRC_expertCORE._Expert_CLEAN_;
 begin
-    LazarusIDE.RemoveHandlerOnIDEClose(@_On_IDE_Close_);
+    //--- "пользовательское" ---
     LazarusIDE_CLEAN;
+    //--------- СВОЕ -----------
+    LazarusIDE.RemoveHandlerOnIDEClose(@_On_IDE_Close_);
+    {$ifDef in0k_LazarusIdeEXT__DEBUG}
+    // in0k_lazarusIdeSRC__wndDEBUG <--- оно САМО отпишется из IDE
+    {$endIf}
 end;
 
 procedure tIn0k_lazIdeSRC_expertCORE._Expert_SetUP_;
 begin
-    LazarusIDE.AddHandlerOnIDEClose(@_On_IDE_Close_);
+    //--- "пользовательское" ---
     LazarusIDE_SetUP;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure tIn0k_lazIdeSRC_expertCORE._On_IDE_Close_({%H-}Sender:TObject);
-begin
-    FREE;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure tIn0k_lazIdeSRC_expertCORE.LazarusIDE_SetUP;
-begin
+    //--------- СВОЕ -----------
+    LazarusIDE.AddHandlerOnIDEClose(@_On_IDE_Close_);
     {$ifDef in0k_LazarusIdeEXT__DEBUG}
     in0k_lazarusIdeSRC__wndDEBUG.SetUpInIDE(self.ClassNAME);
     {$endIf}
 end;
 
-procedure tIn0k_lazIdeSRC_expertCORE.LazarusIDE_CLEAN;
+//------------------------------------------------------------------------------
+
+procedure tIn0k_lazIdeSRC_expertCORE._On_IDE_Close_(Sender:TObject);
 begin
-    {$ifDef in0k_LazarusIdeEXT__DEBUG}
-    // in0k_lazarusIdeSRC__wndDEBUG <--- оно САМО отпишется из IDE
-    {$endIf}
+    self.Destroy; //< ох .. и когда ж мне это аукнется? *^_^*
 end;
 
 end.
