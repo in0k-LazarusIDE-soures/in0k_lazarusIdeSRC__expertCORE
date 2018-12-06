@@ -80,7 +80,7 @@ end;
 //------------------------------------------------------------------------------
 
 procedure tIn0k_lazIdeSRC_expertCORE._On_IDE_Close_(Sender:TObject);
-begin
+begin {todo: может обратиться к помощи threadKILLer?}
     self.Destroy; //< ох .. и когда ж мне это аукнется? *^_^*
 end;
 
