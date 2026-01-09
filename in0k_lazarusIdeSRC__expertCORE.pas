@@ -3,7 +3,7 @@ unit in0k_lazarusIdeSRC__expertCORE;
 
 interface
 
-{$include in0k_LazarusIdeSRC__Settings.inc}
+{$include in0k_LazarusIdeSRC__SETTINGs.inc}
 
 uses {$ifDef in0k_LazarusIdeEXT__DEBUG}
      in0k_lazarusIdeSRC__wndDEBUG,
